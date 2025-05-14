@@ -119,6 +119,47 @@
     </style>
 </head>
 <body>
+    <!-- 입장 애니메이션 오버레이 -->
+    <div id="intro-animation" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #050A1A; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease;">
+        <div class="animation-content" style="text-align: center; width: 100%; max-width: 800px; padding: 0 20px;">
+            <div class="logo-animation" style="margin-bottom: 40px;">
+                <span class="logo-semicolon" style="font-size: 8rem; font-weight: 800; color: transparent; background: linear-gradient(135deg, #0047FF 0%, #00C2FF 100%); -webkit-background-clip: text; background-clip: text; opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Fira Code', monospace;">;</span>
+                <span class="logo-text" style="font-size: 2.5rem; font-weight: 700; margin-left: 10px; opacity: 0; transform: translateX(-20px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; background: linear-gradient(135deg, #0047FF 0%, #8e2de2 100%); -webkit-background-clip: text; background-clip: text; color: transparent;">Semicolon</span>
+            </div>
+            
+            <div class="tag-line" style="font-size: 1.8rem; color: white; margin-bottom: 30px; opacity: 0; transform: translateY(20px); transition: all 0.5s ease 0.6s;">
+                <span>기술로 실현하는 혁신적인 비즈니스</span>
+            </div>
+            
+            <div class="loading-bar-container" style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; margin: 0 auto; overflow: hidden; opacity: 0; transition: opacity 0.5s ease 0.8s;">
+                <div class="loading-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #0047FF, #00C2FF); border-radius: 4px; transition: width 1.8s cubic-bezier(0.1, 0.9, 0.2, 1);"></div>
+            </div>
+            
+            <div class="code-snippet" style="margin-top: 40px; text-align: left; background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 20px; opacity: 0; transform: translateY(20px); transition: all 0.5s ease 1s; border-left: 3px solid #0047FF; overflow: hidden; max-width: 500px; margin-left: auto; margin-right: auto;">
+                <pre style="margin: 0; color: #e6e6e6; font-family: 'Fira Code', monospace; font-size: 14px; overflow: hidden;"><code><span style="color: #569CD6;">class</span> <span style="color: #4EC9B0;">Semicolon</span> {
+  <span style="color: #569CD6;">constructor</span>() {
+    <span style="color: #9CDCFE;">this</span>.<span style="color: #9CDCFE;">innovation</span> = <span style="color: #569CD6;">true</span>;
+    <span style="color: #9CDCFE;">this</span>.<span style="color: #9CDCFE;">technologies</span> = [<span style="color: #CE9178;">"AI"</span>, <span style="color: #CE9178;">"Web"</span>, <span style="color: #CE9178;">"Mobile"</span>];
+  }
+  
+  <span style="color: #DCDCAA;">createSolution</span>() {
+    <span style="color: #C586C0;">return</span> <span style="color: #CE9178;">"혁신적인 비즈니스"</span>;
+  }
+}</code></pre>
+            </div>
+            
+            <div class="tech-keywords" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 30px; opacity: 0; transition: opacity 0.5s ease 1.2s;">
+                <span style="background: rgba(0, 71, 255, 0.2); color: #3D74FF; padding: 8px 15px; border-radius: 100px; font-size: 0.9rem; border: 1px solid rgba(0, 71, 255, 0.3);">AI</span>
+                <span style="background: rgba(110, 52, 240, 0.2); color: #8B5CF6; padding: 8px 15px; border-radius: 100px; font-size: 0.9rem; border: 1px solid rgba(110, 52, 240, 0.3);">빅데이터</span>
+                <span style="background: rgba(255, 61, 90, 0.2); color: #FF9F7C; padding: 8px 15px; border-radius: 100px; font-size: 0.9rem; border: 1px solid rgba(255, 61, 90, 0.3);">클라우드</span>
+                <span style="background: rgba(16, 185, 129, 0.2); color: #34D399; padding: 8px 15px; border-radius: 100px; font-size: 0.9rem; border: 1px solid rgba(16, 185, 129, 0.3);">블록체인</span>
+            </div>
+        </div>
+        
+        <!-- 배경 파티클 캔버스 -->
+        <canvas id="intro-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+    </div>
+
     <div class="progress-bar"></div>
     
     <header>
@@ -526,7 +567,7 @@
     <section id="tech-edge" class="tech-edge">
         <div class="container">
             <div class="section-header">
-                <span class="section-subtitle"><a href="tech-edge.html" style="text-decoration: none; color: inherit;">기술력 소개</a></span>
+                <span class="section-subtitle"><a href="tech-edge.html" id="tech-edge-link" style="text-decoration: none; color: inherit;">기술력 소개</a></span>
                 <h2 class="section-title">우리의 <span class="text-gradient">기술 경쟁력</span></h2>
                 <p class="section-description">세미콜론은 AI와 소프트웨어 엔지니어링을 결합하여 실제 비즈니스 성과를 창출하는 솔루션을 제공합니다.</p>
             </div>
@@ -913,5 +954,156 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+    // 입장 애니메이션 스크립트
+    document.addEventListener('DOMContentLoaded', function() {
+        // 애니메이션 요소들
+        const introAnimation = document.getElementById('intro-animation');
+        const logoSemicolon = document.querySelector('.logo-semicolon');
+        const logoText = document.querySelector('.logo-text');
+        const tagLine = document.querySelector('.tag-line');
+        const loadingBarContainer = document.querySelector('.loading-bar-container');
+        const loadingBar = document.querySelector('.loading-bar');
+        const codeSnippet = document.querySelector('.code-snippet');
+        const techKeywords = document.querySelector('.tech-keywords');
+        const canvas = document.getElementById('intro-canvas');
+        
+        // 스토리지에서 이전 방문 확인
+        const hasVisitedBefore = sessionStorage.getItem('hasVisited');
+        
+        // 이전에 방문한 적이 있으면 애니메이션 스킵
+        if (hasVisitedBefore) {
+            introAnimation.style.display = 'none';
+            return;
+        }
+        
+        // 세션 스토리지에 방문 기록 저장
+        sessionStorage.setItem('hasVisited', 'true');
+        
+        // 캔버스 설정
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d');
+        
+        // 파티클 설정
+        const particles = [];
+        const particleCount = 100;
+        
+        // 파티클 생성
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                color: `rgba(${Math.random() * 70 + 30}, ${Math.random() * 100 + 100}, ${Math.random() * 100 + 155}, ${Math.random() * 0.5 + 0.2})`,
+                speedX: Math.random() * 1 - 0.5,
+                speedY: Math.random() * 1 - 0.5,
+                connections: []
+            });
+        }
+        
+        // 파티클 애니메이션
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 연결 가능 거리
+            const connectionDistance = 150;
+            
+            // 파티클 이동 및 그리기
+            particles.forEach(particle => {
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                
+                // 경계 체크
+                if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+                if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+                
+                // 파티클 그리기
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                ctx.fillStyle = particle.color;
+                ctx.fill();
+                
+                // 연결선 초기화
+                particle.connections = [];
+            });
+            
+            // 파티클 간 연결선 그리기
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        particles[i].connections.push(j);
+                        particles[j].connections.push(i);
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        
+                        // 거리에 따른 선 투명도
+                        const opacity = 1 - (distance / connectionDistance);
+                        ctx.strokeStyle = `rgba(0, 112, 243, ${opacity * 0.5})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            // 애니메이션 루프
+            requestAnimationFrame(animateParticles);
+        }
+        
+        // 애니메이션 시작
+        animateParticles();
+        
+        // 애니메이션 시퀀스 시작
+        setTimeout(() => {
+            logoSemicolon.style.opacity = '1';
+            logoSemicolon.style.transform = 'translateY(0)';
+        }, 300);
+        
+        setTimeout(() => {
+            logoText.style.opacity = '1';
+            logoText.style.transform = 'translateX(0)';
+        }, 600);
+        
+        setTimeout(() => {
+            tagLine.style.opacity = '1';
+            tagLine.style.transform = 'translateY(0)';
+        }, 900);
+        
+        setTimeout(() => {
+            loadingBarContainer.style.opacity = '1';
+            
+            // 로딩바 진행
+            setTimeout(() => {
+                loadingBar.style.width = '100%';
+            }, 100);
+        }, 1200);
+        
+        setTimeout(() => {
+            codeSnippet.style.opacity = '1';
+            codeSnippet.style.transform = 'translateY(0)';
+        }, 1500);
+        
+        setTimeout(() => {
+            techKeywords.style.opacity = '1';
+        }, 1800);
+        
+        // 애니메이션 종료 및 페이지 표시
+        setTimeout(() => {
+            // 오버레이 페이드 아웃
+            introAnimation.style.opacity = '0';
+            
+            // 애니메이션 완전히 사라진 후 제거
+            setTimeout(() => {
+                introAnimation.style.display = 'none';
+            }, 800);
+        }, 3500);
+    });
+    </script>
 </body>
 </html>

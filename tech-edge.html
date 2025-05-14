@@ -234,6 +234,15 @@
     </style>
 </head>
 <body>
+    <div id="initial-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #050A1A; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease;">
+        <div style="text-align: center;">
+            <h1 style="font-size: 3.5rem; color: #0047FF; font-weight: 800; margin-bottom: 30px; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;" id="loader-title">기술력을 시각화합니다</h1>
+            <div style="width: 200px; height: 4px; background: rgba(0, 71, 255, 0.2); border-radius: 4px; margin: 0 auto; overflow: hidden;">
+                <div id="progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #0047FF, #00C2FF); border-radius: 4px; transition: width 0.8s ease-out;"></div>
+            </div>
+        </div>
+    </div>
+
     <div id="canvas-container"></div>
     
     <a href="index.html" class="back-link">
@@ -292,6 +301,7 @@ let colorPalette = [
     [255, 61, 90],   // 분홍색
     [16, 185, 129]   // 녹색
 ];
+let fadeInAlpha = 0; // 초기 투명도
 
 function setup() {
     let canvas = createCanvas(windowWidth, windowHeight);
@@ -325,10 +335,22 @@ function setup() {
         attractorX = e.clientX;
         attractorY = e.clientY;
     });
+    
+    // 페이드인 효과를 위한 타이머 설정
+    setTimeout(() => {
+        // 1.5초 동안 천천히 페이드인
+        const fadeInterval = setInterval(() => {
+            fadeInAlpha += 0.02;
+            if (fadeInAlpha >= 1) {
+                fadeInAlpha = 1;
+                clearInterval(fadeInterval);
+            }
+        }, 30);
+    }, 1200); // 로딩 애니메이션이 완료된 후에 시작
 }
 
 function draw() {
-    background(10, 15, 40, 50);
+    background(10, 15, 40, 50 * fadeInAlpha);
     
     if (mode === 0) {
         // 모드 0: 연결 선 그리기
@@ -342,7 +364,7 @@ function draw() {
                              particles[j].pos.x, particles[j].pos.y);
                 
                 if (d < connectionDistance) {
-                    let alpha = map(d, 0, connectionDistance, 100, 0);
+                    let alpha = map(d, 0, connectionDistance, 100, 0) * fadeInAlpha;
                     stroke(hue, 200, 255, alpha);
                     strokeWeight(1);
                     line(particles[i].pos.x, particles[i].pos.y, 
@@ -494,6 +516,40 @@ class Particle {
         if (this.pos.y < 0) this.pos.y = height;
     }
 }
+
+// 로딩 애니메이션
+window.addEventListener('DOMContentLoaded', function() {
+    const loader = document.getElementById('initial-loader');
+    const loaderTitle = document.getElementById('loader-title');
+    const progressBar = document.getElementById('progress-bar');
+    
+    // 타이틀 애니메이션
+    setTimeout(() => {
+        loaderTitle.style.opacity = '1';
+        loaderTitle.style.transform = 'translateY(0)';
+    }, 100);
+    
+    // 프로그레스 바 애니메이션
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 5;
+        progressBar.style.width = `${progress}%`;
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+            
+            // 로딩이 완료되면 로더 페이드 아웃
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                
+                // 완전히 사라진 후 요소 제거
+                setTimeout(() => {
+                    loader.remove();
+                }, 800);
+            }, 200);
+        }
+    }, 50);
+});
 </script>
 </body>
 </html> 
