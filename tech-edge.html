@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세미콜론 - 기술 시각화</title>
+    <meta name="description" content="세미콜론의 기술력을 시각적으로 보여주는 인터랙티브 페이지입니다.">
+    <!-- Google Fonts - Pretendard + Fira Code -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 파비콘 -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- p5.js 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050A1A;
+            color: white;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        }
+        
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            background-color: rgba(5, 10, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 112, 243, 0.2);
+            pointer-events: auto;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #0047FF 0%, #00C2FF 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .tech-tag {
+            display: inline-block;
+            background-color: rgba(0, 71, 255, 0.2);
+            color: #3D74FF;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-weight: 500;
+            border: 1px solid rgba(0, 71, 255, 0.3);
+        }
+        
+        .tech-tag.purple {
+            background-color: rgba(110, 52, 240, 0.2);
+            color: #8B5CF6;
+            border-color: rgba(110, 52, 240, 0.3);
+        }
+        
+        .tech-tag.orange {
+            background-color: rgba(255, 61, 90, 0.2);
+            color: #FF9F7C;
+            border-color: rgba(255, 61, 90, 0.3);
+        }
+        
+        .tech-tag.green {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #34D399;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #0047FF 0%, #0070F3 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 71, 255, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 71, 255, 0.4);
+        }
+        
+        button.secondary {
+            background: transparent;
+            border: 2px solid #0047FF;
+            color: #0047FF;
+            box-shadow: none;
+        }
+        
+        button.secondary:hover {
+            background: rgba(0, 71, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 100px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-3px);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0047FF 0%, #00C2FF 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> 메인으로 돌아가기
+    </a>
+    
+    <div class="overlay">
+        <div class="content">
+            <h1>세미콜론의 기술력</h1>
+            <p>저희는 단순한 이론이나 키워드가 아닌 <strong>실제 구현 가능한 기술력</strong>을 바탕으로 비즈니스 문제를 해결합니다. 마우스를 움직여 기술 패턴의 변화를 확인해보세요.</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">시스템 안정성</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5배</div>
+                    <div class="stat-label">생산성 향상</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">300%</div>
+                    <div class="stat-label">투자 수익률</div>
+                </div>
+            </div>
+            
+            <div class="tech-tags">
+                <div class="tech-tag">AI 최적화</div>
+                <div class="tech-tag">대용량 데이터</div>
+                <div class="tech-tag">실시간 처리</div>
+                <div class="tech-tag purple">클라우드 인프라</div>
+                <div class="tech-tag purple">분산 시스템</div>
+                <div class="tech-tag orange">검색 엔진</div>
+                <div class="tech-tag orange">추천 알고리즘</div>
+                <div class="tech-tag green">보안 시스템</div>
+                <div class="tech-tag green">백엔드 최적화</div>
+            </div>
+            
+            <div class="controls">
+                <button id="change-mode">시각화 모드 변경</button>
+                <button id="randomize" class="secondary">랜덤 패턴 생성</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+let particles = [];
+let particleCount = 150;
+let connectionDistance = 150;
+let mode = 0; // 시각화 모드 (0: 연결선, 1: 파티클 플로우, 2: 프랙탈)
+let hue = 0;
+let attractorX, attractorY;
+let colorPalette = [
+    [0, 71, 255],    // 파란색
+    [110, 52, 240],  // 보라색
+    [255, 61, 90],   // 분홍색
+    [16, 185, 129]   // 녹색
+];
+
+function setup() {
+    let canvas = createCanvas(windowWidth, windowHeight);
+    canvas.parent('canvas-container');
+    colorMode(HSB, 255);
+    
+    // 초기 파티클 생성
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+    
+    // 초기 어트랙터 위치
+    attractorX = width / 2;
+    attractorY = height / 2;
+    
+    // 이벤트 리스너 등록
+    document.getElementById('change-mode').addEventListener('click', function() {
+        mode = (mode + 1) % 3;
+    });
+    
+    document.getElementById('randomize').addEventListener('click', function() {
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].randomize();
+        }
+        
+        hue = random(255);
+    });
+    
+    // 마우스 움직임 감지
+    window.addEventListener('mousemove', function(e) {
+        attractorX = e.clientX;
+        attractorY = e.clientY;
+    });
+}
+
+function draw() {
+    background(10, 15, 40, 50);
+    
+    if (mode === 0) {
+        // 모드 0: 연결 선 그리기
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].display();
+            
+            // 연결선 그리기
+            for (let j = i + 1; j < particles.length; j++) {
+                let d = dist(particles[i].pos.x, particles[i].pos.y, 
+                             particles[j].pos.x, particles[j].pos.y);
+                
+                if (d < connectionDistance) {
+                    let alpha = map(d, 0, connectionDistance, 100, 0);
+                    stroke(hue, 200, 255, alpha);
+                    strokeWeight(1);
+                    line(particles[i].pos.x, particles[i].pos.y, 
+                         particles[j].pos.x, particles[j].pos.y);
+                }
+            }
+        }
+    } else if (mode === 1) {
+        // 모드 1: 파티클 플로우
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].updateFlow();
+            particles[i].displayFlow();
+        }
+    } else if (mode === 2) {
+        // 모드 2: 프랙탈 및 기술 시각화
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].updateFractal();
+            particles[i].displayFractal();
+        }
+    }
+    
+    // 마우스 위치에 따라 색상 변화
+    hue = (hue + 0.5) % 255;
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
+class Particle {
+    constructor() {
+        this.pos = createVector(random(width), random(height));
+        this.vel = createVector(random(-1, 1), random(-1, 1));
+        this.acc = createVector(0, 0);
+        this.maxSpeed = random(1, 3);
+        this.prevPos = this.pos.copy();
+        this.size = random(2, 5);
+        this.color = random(colorPalette);
+        this.life = 255;
+        this.lifeReduction = random(0.5, 1.5);
+        this.angle = 0;
+    }
+    
+    randomize() {
+        this.pos = createVector(random(width), random(height));
+        this.vel = createVector(random(-1, 1), random(-1, 1));
+        this.size = random(2, 5);
+        this.color = random(colorPalette);
+    }
+    
+    update() {
+        // 마우스에 약간 끌리는 효과
+        let target = createVector(attractorX, attractorY);
+        let dir = p5.Vector.sub(target, this.pos);
+        dir.setMag(0.1);
+        this.acc.add(dir);
+        
+        this.vel.add(this.acc);
+        this.vel.limit(this.maxSpeed);
+        this.prevPos = this.pos.copy();
+        this.pos.add(this.vel);
+        this.acc.mult(0);
+        
+        // 화면 경계 검사
+        this.edges();
+    }
+    
+    updateFlow() {
+        // 노이즈 필드를 통해 움직임 생성
+        let angle = noise(this.pos.x * 0.005, this.pos.y * 0.005, frameCount * 0.002) * TWO_PI * 2;
+        this.vel.x = cos(angle) * this.maxSpeed;
+        this.vel.y = sin(angle) * this.maxSpeed;
+        
+        // 마우스에 약간 끌리는 효과
+        let target = createVector(attractorX, attractorY);
+        let dir = p5.Vector.sub(target, this.pos);
+        let d = dir.mag();
+        dir.setMag(map(d, 0, width/2, 0.5, 0.1));
+        this.vel.add(dir);
+        
+        this.prevPos = this.pos.copy();
+        this.pos.add(this.vel);
+        
+        // 라이프 감소
+        this.life -= this.lifeReduction;
+        if (this.life < 0) {
+            this.life = 255;
+            this.pos = createVector(random(width), random(height));
+            this.prevPos = this.pos.copy();
+        }
+        
+        // 화면 경계 검사
+        this.edges();
+    }
+    
+    updateFractal() {
+        this.angle += 0.05;
+        
+        // 주변에 맴도는 효과
+        let orbitRadius = 100 + sin(frameCount * 0.01) * 50;
+        let centerX = width / 2 + cos(frameCount * 0.01) * width / 4;
+        let centerY = height / 2 + sin(frameCount * 0.02) * height / 4;
+        
+        // 마우스를 중심으로 회전
+        let mouseInfluence = 0.3;
+        centerX = lerp(centerX, attractorX, mouseInfluence);
+        centerY = lerp(centerY, attractorY, mouseInfluence);
+        
+        // 위치 업데이트
+        this.pos.x = centerX + cos(this.angle * this.maxSpeed) * orbitRadius;
+        this.pos.y = centerY + sin(this.angle * this.maxSpeed) * orbitRadius;
+        
+        // 약간의 랜덤 요소 추가
+        this.pos.x += random(-2, 2);
+        this.pos.y += random(-2, 2);
+    }
+    
+    display() {
+        noStroke();
+        fill(hue, 200, 255, 150);
+        ellipse(this.pos.x, this.pos.y, this.size);
+    }
+    
+    displayFlow() {
+        let alpha = map(this.life, 0, 255, 0, 100);
+        stroke(hue, 200, 255, alpha);
+        strokeWeight(this.size);
+        line(this.prevPos.x, this.prevPos.y, this.pos.x, this.pos.y);
+    }
+    
+    displayFractal() {
+        noStroke();
+        let h = (hue + this.angle * 10) % 255;
+        fill(h, 200, 255, 150);
+        ellipse(this.pos.x, this.pos.y, this.size * 2);
+        
+        // 선택적으로 연결선 표시
+        if (frameCount % 120 < 60) {
+            stroke(h, 200, 255, 50);
+            strokeWeight(0.5);
+            line(this.pos.x, this.pos.y, width/2, height/2);
+        }
+    }
+    
+    edges() {
+        if (this.pos.x > width) this.pos.x = 0;
+        if (this.pos.x < 0) this.pos.x = width;
+        if (this.pos.y > height) this.pos.y = 0;
+        if (this.pos.y < 0) this.pos.y = height;
+    }
+}
+</script>
+</body>
+</html> 
