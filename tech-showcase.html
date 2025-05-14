@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세미콜론 - 테크놀로지 쇼케이스</title>
+    <meta name="description" content="세미콜론의 첨단 기술력을 보여주는 인터랙티브 시각화 쇼케이스입니다.">
+    <!-- Google Fonts - Pretendard + Fira Code -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 파비콘 -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- p5.js 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <!-- 3D 시각화를 위한 WEBGL 확장 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            color: white;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        }
+        
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        .interface {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .header {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Fira Code', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFF;
+            margin-right: 15px;
+            opacity: 0.9;
+        }
+        
+        .title {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            pointer-events: auto;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .control-btn i {
+            font-size: 16px;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            pointer-events: auto;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-3px);
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+            pointer-events: none;
+        }
+        
+        .data-display {
+            position: absolute;
+            top: 90px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            width: 240px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .data-display .title {
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0088ff;
+        }
+        
+        .data-display .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .data-display .label {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .data-display .value {
+            color: #0088ff;
+        }
+        
+        .tech-labels {
+            position: absolute;
+            bottom: 100px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .tech-tag {
+            background: rgba(0, 136, 255, 0.2);
+            border: 1px solid rgba(0, 136, 255, 0.4);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .tech-tag.highlighted {
+            background: rgba(0, 136, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 136, 255, 0.6);
+            transform: scale(1.1);
+        }
+        
+        .help-panel {
+            position: absolute;
+            left: 30px;
+            top: 90px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            width: 240px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transform: translateX(-300px);
+            transition: transform 0.3s ease;
+        }
+        
+        .help-panel.show {
+            transform: translateX(0);
+        }
+        
+        .help-panel .title {
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .help-panel p {
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-logo {
+            font-family: 'Fira Code', monospace;
+            font-size: 70px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0088ff, #00aaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+        
+        .loading-text {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+        
+        .loading-bar-container {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #0088ff, #00aaff);
+            transition: width 0.5s ease;
+        }
+        
+        .mouse-hint {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            animation: pulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 로딩 화면 -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-logo">;</div>
+        <div class="loading-text">세미콜론의 최첨단 테크놀로지 시각화를 불러오는 중...</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loading-bar"></div>
+        </div>
+    </div>
+    
+    <!-- 인터페이스 레이어 -->
+    <div class="interface">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 메인으로 돌아가기
+        </a>
+        
+        <div class="header">
+            <div class="logo">;</div>
+            <h1 class="title">테크놀로지 쇼케이스</h1>
+        </div>
+        
+        <div class="data-display">
+            <div class="title">실시간 데이터</div>
+            <div class="data-row">
+                <span class="label">모델 복잡도:</span>
+                <span class="value" id="complexity-value">87.4%</span>
+            </div>
+            <div class="data-row">
+                <span class="label">프레임 속도:</span>
+                <span class="value" id="framerate-value">60fps</span>
+            </div>
+            <div class="data-row">
+                <span class="label">파티클 수:</span>
+                <span class="value" id="particles-value">5,234</span>
+            </div>
+            <div class="data-row">
+                <span class="label">중력 모드:</span>
+                <span class="value" id="gravity-value">비활성화</span>
+            </div>
+        </div>
+        
+        <div class="help-panel" id="help-panel">
+            <div class="title">조작 방법</div>
+            <p>- <b>마우스 드래그</b>: 화면 회전</p>
+            <p>- <b>Shift + 마우스 드래그</b>: 중력장 생성</p>
+            <p>- <b>마우스 휠</b>: 확대/축소</p>
+            <p>- <b>스페이스바</b>: 모드 변경</p>
+            <p>- <b>R 키</b>: 시각화 초기화</p>
+        </div>
+        
+        <div class="tech-labels">
+            <div class="tech-tag">데이터 시각화</div>
+            <div class="tech-tag">인공지능</div>
+            <div class="tech-tag">네트워크 분석</div>
+            <div class="tech-tag">빅데이터</div>
+            <div class="tech-tag">머신러닝</div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="mode-btn">
+                <i class="fas fa-exchange-alt"></i> 모드 변경
+            </button>
+            <button class="control-btn" id="data-btn">
+                <i class="fas fa-chart-network"></i> 데이터 구조
+            </button>
+            <button class="control-btn" id="help-btn">
+                <i class="fas fa-question-circle"></i> 도움말
+            </button>
+        </div>
+        
+        <div class="overlay"></div>
+        
+        <div class="mouse-hint" id="mouse-hint">
+            마우스를 움직여 시각화와 상호작용하세요
+        </div>
+    </div>
+
+<script>
+// 전역 변수
+let visualMode = 0; // 시각화 모드 (0: 데이터 구체, 1: 네트워크, 2: 파티클 폭발, 3: 3D 지형)
+let rotationX = 0;
+let rotationY = 0;
+let particles = [];
+let connections = [];
+let zoom = 800;
+let targetZoom = 800;
+let cameraX = 0;
+let cameraY = 0;
+let targetX = 0;
+let targetY = 0;
+let lastMouseX = 0;
+let lastMouseY = 0;
+let isDragging = false;  // 화면 회전용
+let isGravityActive = false;  // 중력 활성화 상태
+let pointCloud = [];
+let terrain = [];
+let terrainSize = 80;
+let needsReset = false;
+let spectrum = [];
+let bass = 0;
+let mid = 0;
+let treble = 0;
+let isLoaded = false;
+let showHint = false;
+let highlightedTag = -1;
+let nodes = [];
+let nodeCount = 120;
+let attractors = [];
+let attractorCount = 5;
+let lastFrameRate = 0;
+let complexityValue = 0;
+let frameRates = [];
+let audioDuration = 0;
+let audioProgress = 0;
+let lineWidth = 2;
+let dataTime = 0;
+let useShader = false;
+let isMousePressed = false;
+let gravityStrength = 0;
+let gravityTarget = 0;
+let mouseWorldX = 0;
+let mouseWorldY = 0;
+let mouseWorldZ = 0;
+let gravityKey = false;  // 중력 모드 키 (Shift 키)
+
+// 로드 애니메이션
+function simulateLoading() {
+    const loadingBar = document.getElementById('loading-bar');
+    const loadingScreen = document.getElementById('loading-screen');
+    let progress = 0;
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            
+            // 로딩 완료
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    isLoaded = true;
+                    showMouseHint();
+                }, 500);
+            }, 500);
+        }
+        
+        loadingBar.style.width = `${progress}%`;
+    }, 400);
+}
+
+// 마우스 힌트 표시
+function showMouseHint() {
+    const mouseHint = document.getElementById('mouse-hint');
+    showHint = true;
+    
+    mouseHint.style.opacity = '1';
+    
+    setTimeout(() => {
+        mouseHint.style.opacity = '0';
+        showHint = false;
+    }, 4000);
+}
+
+// p5.js 셋업
+function setup() {
+    createCanvas(windowWidth, windowHeight, WEBGL);
+    colorMode(HSB, 255);
+    
+    // 데이터 구조 초기화
+    initData();
+    
+    // UI 이벤트 연결
+    document.getElementById('mode-btn').addEventListener('click', function() {
+        visualMode = (visualMode + 1) % 4;
+        needsReset = true;
+    });
+    
+    document.getElementById('data-btn').addEventListener('click', function() {
+        generateNewData();
+    });
+    
+    document.getElementById('help-btn').addEventListener('click', function() {
+        const helpPanel = document.getElementById('help-panel');
+        helpPanel.classList.toggle('show');
+    });
+    
+    // 키보드 이벤트
+    document.addEventListener('keydown', function(e) {
+        if (e.code === 'Space') {
+            visualMode = (visualMode + 1) % 4;
+            needsReset = true;
+        } else if (e.code === 'KeyR') {
+            generateNewData();
+        } else if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+            gravityKey = true;
+        }
+    });
+    
+    document.addEventListener('keyup', function(e) {
+        if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+            gravityKey = false;
+            gravityTarget = 0; // 중력 해제
+        }
+    });
+    
+    // 마우스 이벤트
+    canvas.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        
+        // Shift 키를 누른 상태에서 클릭하면 중력 활성화
+        if (gravityKey) {
+            isGravityActive = true;
+            gravityTarget = 5; // 중력 강도 목표값 (이전보다 작게 설정)
+        }
+        
+        // 월드 좌표 계산 실행
+        calculateMouseWorldCoordinates();
+    });
+
+    document.addEventListener('mouseup', function() {
+        isDragging = false;
+        isGravityActive = false;
+        gravityTarget = 0; // 중력 강도 목표값 초기화
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (isDragging) {
+            // 월드 좌표 업데이트 (중력 계산용)
+            calculateMouseWorldCoordinates();
+            
+            // 중력 모드가 활성화되지 않은 경우만 회전 적용
+            if (!isGravityActive) {
+                const deltaX = e.clientX - lastMouseX;
+                const deltaY = e.clientY - lastMouseY;
+                rotationY += deltaX * 0.01;
+                rotationX += deltaY * 0.01;
+            }
+            
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        }
+    });
+    
+    // 마우스 휠 이벤트
+    canvas.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        targetZoom += e.deltaY * 0.5;
+        targetZoom = constrain(targetZoom, 200, 2000);
+    });
+    
+    // 시뮬레이션된 로딩 시작
+    simulateLoading();
+    
+    // 초기 데이터 생성
+    generateNewData();
+    
+    // 프레임 레이트 배열 초기화
+    for (let i = 0; i < 10; i++) {
+        frameRates.push(60);
+    }
+}
+
+// 데이터 초기화
+function initData() {
+    // 노드 생성
+    nodes = [];
+    for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+            x: random(-500, 500),
+            y: random(-500, 500),
+            z: random(-500, 500),
+            vx: random(-1, 1) * 0.5,
+            vy: random(-1, 1) * 0.5,
+            vz: random(-1, 1) * 0.5,
+            size: random(3, 12),
+            hue: random(160, 240),
+            connections: []
+        });
+    }
+    
+    // 어트랙터 생성
+    attractors = [];
+    for (let i = 0; i < attractorCount; i++) {
+        attractors.push({
+            x: random(-300, 300),
+            y: random(-300, 300),
+            z: random(-300, 300),
+            strength: random(0.5, 2),
+            radius: random(50, 150)
+        });
+    }
+    
+    // 3D 지형 생성
+    terrain = [];
+    for (let x = 0; x < terrainSize; x++) {
+        terrain[x] = [];
+        for (let y = 0; y < terrainSize; y++) {
+            terrain[x][y] = 0;
+        }
+    }
+    
+    // 파티클 생성
+    particles = [];
+    for (let i = 0; i < 2000; i++) {
+        let angle = random(TWO_PI);
+        let radius = random(10, 500);
+        
+        particles.push({
+            x: cos(angle) * radius,
+            y: sin(angle) * radius,
+            z: random(-200, 200),
+            vx: random(-1, 1) * 2,
+            vy: random(-1, 1) * 2,
+            vz: random(-1, 1) * 2,
+            size: random(1, 4),
+            hue: random(160, 240),
+            life: 255
+        });
+    }
+    
+    // 포인트 클라우드 생성
+    pointCloud = [];
+    let totalPoints = 5000;
+    
+    for (let i = 0; i < totalPoints; i++) {
+        // 구체 위의 점 생성
+        let radius = 300;
+        let theta = random(TWO_PI);
+        let phi = random(PI);
+        
+        let x = radius * sin(phi) * cos(theta);
+        let y = radius * sin(phi) * sin(theta);
+        let z = radius * cos(phi);
+        
+        let noiseVal = noise(x * 0.01, y * 0.01, z * 0.01);
+        let distortion = map(noiseVal, 0, 1, 0.8, 1.2);
+        
+        x *= distortion;
+        y *= distortion;
+        z *= distortion;
+        
+        pointCloud.push({
+            x: x,
+            y: y,
+            z: z,
+            ox: x,
+            oy: y,
+            oz: z,
+            size: random(1, 4),
+            hue: map(noiseVal, 0, 1, 160, 240)
+        });
+    }
+    
+    // 스펙트럼 데이터 시뮬레이션
+    spectrum = [];
+    for (let i = 0; i < 128; i++) {
+        spectrum[i] = random();
+    }
+    
+    bass = random();
+    mid = random();
+    treble = random();
+}
+
+// 새 데이터 생성
+function generateNewData() {
+    needsReset = true;
+    
+    // 태그 하이라이트 랜덤화
+    highlightedTag = floor(random(5));
+    const tags = document.querySelectorAll('.tech-tag');
+    
+    tags.forEach((tag, index) => {
+        if (index === highlightedTag) {
+            tag.classList.add('highlighted');
+        } else {
+            tag.classList.remove('highlighted');
+        }
+    });
+    
+    // 데이터 타임스탬프 업데이트
+    dataTime = Date.now();
+    
+    // 복잡도 값 업데이트
+    complexityValue = Math.floor(random(60, 99));
+    document.getElementById('complexity-value').textContent = `${complexityValue}%`;
+    
+    // 파티클 수 업데이트
+    const particleCount = Math.floor(random(3000, 8000));
+    document.getElementById('particles-value').textContent = particleCount.toLocaleString();
+}
+
+// 데이터 업데이트
+function updateData() {
+    if (needsReset) {
+        initData();
+        needsReset = false;
+    }
+    
+    // 중력 강도 업데이트
+    gravityStrength = lerp(gravityStrength, gravityTarget, 0.1);
+    
+    // 노드 업데이트
+    for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        
+        // 마우스 중력 효과 추가
+        if (isGravityActive && gravityStrength > 0.1) {
+            const dx = node.x - mouseWorldX;
+            const dy = node.y - mouseWorldY;
+            const dz = node.z - mouseWorldZ;
+            const dist = sqrt(dx*dx + dy*dy + dz*dz);
+            
+            if (dist < 400) {
+                const force = map(dist, 0, 400, gravityStrength, 0);
+                node.vx += -dx / (dist + 0.1) * force * 0.2;
+                node.vy += -dy / (dist + 0.1) * force * 0.2;
+                node.vz += -dz / (dist + 0.1) * force * 0.2;
+            }
+        }
+        
+        // 노드 이동
+        node.x += node.vx;
+        node.y += node.vy;
+        node.z += node.vz;
+        
+        // 속도 감쇠
+        node.vx *= 0.98;
+        node.vy *= 0.98;
+        node.vz *= 0.98;
+        
+        // 경계 확인
+        let bound = 500;
+        if (Math.abs(node.x) > bound || Math.abs(node.y) > bound || Math.abs(node.z) > bound) {
+            let angle = random(TWO_PI);
+            let phi = random(PI);
+            node.vx = -node.x * 0.001 + cos(angle) * sin(phi) * random(0.5, 1.5);
+            node.vy = -node.y * 0.001 + sin(angle) * sin(phi) * random(0.5, 1.5);
+            node.vz = -node.z * 0.001 + cos(phi) * random(0.5, 1.5);
+        }
+    }
+    
+    // 지형 업데이트
+    for (let x = 0; x < terrainSize; x++) {
+        for (let y = 0; y < terrainSize; y++) {
+            let time = millis() * 0.0003;
+            let scale = 0.02;
+            terrain[x][y] = 100 * noise(x * scale, y * scale, time);
+        }
+    }
+    
+    // 시뮬레이션된 스펙트럼 업데이트
+    for (let i = 0; i < spectrum.length; i++) {
+        let target = noise(i * 0.05, frameCount * 0.01) * 0.8 + 0.2;
+        spectrum[i] = lerp(spectrum[i], target, 0.1);
+    }
+    
+    // 저주파, 중주파, 고주파 시뮬레이션
+    let targetBass = noise(frameCount * 0.02) * 0.8 + 0.2;
+    let targetMid = noise(100 + frameCount * 0.02) * 0.8 + 0.2;
+    let targetTreble = noise(200 + frameCount * 0.02) * 0.8 + 0.2;
+    
+    bass = lerp(bass, targetBass, 0.1);
+    mid = lerp(mid, targetMid, 0.1);
+    treble = lerp(treble, targetTreble, 0.1);
+    
+    // 오디오 진행 상태 업데이트
+    audioDuration = 240; // 4분 길이 가상
+    audioProgress = (millis() / 1000) % audioDuration;
+    
+    // 프레임 레이트 업데이트
+    frameRates.push(frameRate());
+    frameRates.shift();
+    lastFrameRate = frameRates.reduce((a, b) => a + b, 0) / frameRates.length;
+    
+    // UI 업데이트
+    document.getElementById('framerate-value').textContent = `${Math.round(lastFrameRate)}fps`;
+
+    // 중력 모드 상태 업데이트
+    document.getElementById('gravity-value').textContent = gravityKey ? "준비됨 (Shift)" : "비활성화";
+    if (isGravityActive) {
+        document.getElementById('gravity-value').textContent = "활성화";
+        document.getElementById('gravity-value').style.color = "#00AAFF";
+    } else {
+        document.getElementById('gravity-value').style.color = "";
+    }
+}
+
+// p5.js 드로우 루프
+function draw() {
+    background(0);
+    
+    // 데이터 업데이트
+    updateData();
+    
+    // 카메라 애니메이션
+    zoom = lerp(zoom, targetZoom, 0.1);
+    
+    // 시각화 설정
+    push();
+    
+    // 카메라 설정
+    translate(cameraX, cameraY, -zoom);
+    rotateX(rotationX);
+    rotateY(rotationY);
+    
+    // 모드에 따라 시각화 표시
+    if (visualMode === 0) {
+        // 모드 0: 데이터 구체
+        drawDataSphere();
+    } else if (visualMode === 1) {
+        // 모드 1: 네트워크 시각화
+        drawNetwork();
+    } else if (visualMode === 2) {
+        // 모드 2: 파티클 시스템
+        drawParticleSystem();
+    } else if (visualMode === 3) {
+        // 모드 3: 3D 지형
+        drawTerrain();
+    }
+    
+    // 마우스 중력장 시각화 (간소화된 버전)
+    if (isGravityActive && gravityStrength > 0.1) {
+        push();
+        translate(mouseWorldX, mouseWorldY, mouseWorldZ);
+        
+        // 간단한 중력장 표시
+        noFill();
+        stroke(0, 200, 255, 60);
+        strokeWeight(1);
+        sphere(30 * gravityStrength);
+        
+        // 중심점
+        fill(0, 200, 255, 150);
+        noStroke();
+        sphere(3);
+        
+        pop();
+    }
+    
+    pop();
+}
+
+// 데이터 구체 시각화
+function drawDataSphere() {
+    const time = millis() * 0.001;
+    
+    // 빛 효과
+    ambientLight(30);
+    pointLight(200, 30, 255, 0, 0, 500);
+    pointLight(160, 30, 255, 500, 0, 0);
+    
+    // 포인트 클라우드 그리기
+    for (let i = 0; i < pointCloud.length; i++) {
+        const p = pointCloud[i];
+        
+        // 포인트 애니메이션
+        const noiseFactor = noise(p.ox * 0.01, p.oy * 0.01, time * 0.5);
+        const pulseRadius = map(noiseFactor, 0, 1, 0.8, 1.2);
+        
+        // 마우스 중력 효과 추가
+        if (isGravityActive && gravityStrength > 0.1) {
+            const dx = p.x - mouseWorldX;
+            const dy = p.y - mouseWorldY;
+            const dz = p.z - mouseWorldZ;
+            const dist = sqrt(dx*dx + dy*dy + dz*dz);
+            
+            if (dist < 300) {
+                const force = map(dist, 0, 300, gravityStrength, 0);
+                const dirX = -dx / (dist + 0.1) * force;
+                const dirY = -dy / (dist + 0.1) * force;
+                const dirZ = -dz / (dist + 0.1) * force;
+                
+                // 중력에 따라 위치 변경
+                p.x += dirX;
+                p.y += dirY;
+                p.z += dirZ;
+            }
+        }
+        
+        // 마우스 영향
+        let mouseEffect = 0;
+        if (isLoaded && !showHint) {
+            const mouseXnorm = map(mouseX, 0, width, -1, 1);
+            const mouseYnorm = map(mouseY, 0, height, -1, 1);
+            const angle = atan2(p.oy, p.ox) + mouseXnorm * 2;
+            const elevation = atan2(p.oz, sqrt(p.ox * p.ox + p.oy * p.oy)) + mouseYnorm;
+            
+            mouseEffect = 1.0 + sin(time * 2 + i * 0.01) * 0.2;
+        }
+        
+        const radius = 300 * pulseRadius * (1 + mouseEffect * 0.1);
+        
+        // 변형된 구체 위치
+        const theta = atan2(p.oy, p.ox) + time * 0.1 * (noise(i * 0.1) * 2 - 1) * 0.1;
+        const phi = atan2(p.oz, sqrt(p.ox * p.ox + p.oy * p.oy)) + sin(time * 0.2) * 0.05;
+        
+        const x = radius * sin(phi) * cos(theta);
+        const y = radius * sin(phi) * sin(theta);
+        const z = radius * cos(phi);
+        
+        // 스펙트럼에 따른 변형
+        const freq = i % spectrum.length;
+        const freqValue = spectrum[freq];
+        const radiusOffset = freqValue * 100;
+        
+        const hue = map(noiseFactor, 0, 1, 160, 220);
+        const size = p.size * (1 + freqValue * 3);
+        
+        push();
+        translate(x + p.ox * 0.1, y + p.oy * 0.1, z + p.oz * 0.1 + radiusOffset);
+        
+        noStroke();
+        fill(hue, 200, 255, 200);
+        sphere(size);
+        
+        // 연결선
+        if (i % 20 === 0 && i + 5 < pointCloud.length) {
+            const nextP = pointCloud[i + 5];
+            const nextX = nextP.ox * pulseRadius;
+            const nextY = nextP.oy * pulseRadius;
+            const nextZ = nextP.oz * pulseRadius;
+            
+            stroke(hue, 150, 255, 50);
+            strokeWeight(0.5);
+            line(0, 0, 0, nextX - x, nextY - y, nextZ - z);
+        }
+        
+        pop();
+    }
+    
+    // 중앙 코어
+    push();
+    noStroke();
+    fill(200, 150, 255, 100);
+    sphere(50 + 20 * sin(time * 2));
+    
+    // 궤도 링
+    for (let i = 0; i < 3; i++) {
+        push();
+        rotateX(PI/2 + time * 0.1 * (i + 1) * 0.3);
+        rotateY(time * 0.05 * (i + 1) * 0.2);
+        
+        noFill();
+        stroke(190 + i * 20, 200, 255, 100);
+        strokeWeight(1.5);
+        ellipse(0, 0, 400 + i * 100, 400 + i * 100);
+        pop();
+    }
+    
+    pop();
+    
+    // 파티클 주변 효과
+    for (let i = 0; i < 50; i++) {
+        const angle = i * TWO_PI / 50 + time * 0.5;
+        const radius = 350 + sin(i * 0.5 + time * 2) * 30;
+        const x = cos(angle) * radius;
+        const y = sin(angle) * radius;
+        const z = sin(time + i * 0.3) * 100;
+        
+        push();
+        translate(x, y, z);
+        noStroke();
+        fill(200, 150, 255, 150);
+        sphere(2 + sin(i + time * 3) * 2);
+        pop();
+    }
+}
+
+// 네트워크 시각화
+function drawNetwork() {
+    // 암시적 조명
+    ambientLight(50);
+    pointLight(180, 50, 255, 0, 0, 300);
+    
+    // 노드 간 연결 설정
+    const connectionDist = 150;
+    const connectionCount = 0;
+    
+    // 노드 그리기
+    for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        
+        // 마우스 중력 효과 추가
+        if (isGravityActive && gravityStrength > 0.1) {
+            const dx = node.x - mouseWorldX;
+            const dy = node.y - mouseWorldY;
+            const dz = node.z - mouseWorldZ;
+            const dist = sqrt(dx*dx + dy*dy + dz*dz);
+            
+            if (dist < 400) {
+                const force = map(dist, 0, 400, gravityStrength, 0);
+                node.vx += -dx / (dist + 0.1) * force * 0.2;
+                node.vy += -dy / (dist + 0.1) * force * 0.2;
+                node.vz += -dz / (dist + 0.1) * force * 0.2;
+            }
+        }
+        
+        push();
+        translate(node.x, node.y, node.z);
+        
+        // 노드 스타일
+        noStroke();
+        fill(node.hue, 180, 255, 200);
+        sphere(node.size);
+        pop();
+        
+        // 노드 간 연결 찾기
+        node.connections = [];
+        for (let j = i + 1; j < nodes.length; j++) {
+            const otherNode = nodes[j];
+            const dx = node.x - otherNode.x;
+            const dy = node.y - otherNode.y;
+            const dz = node.z - otherNode.z;
+            const dist = sqrt(dx * dx + dy * dy + dz * dz);
+            
+            if (dist < connectionDist) {
+                node.connections.push(j);
+                
+                // 연결선 그리기
+                const alpha = map(dist, 0, connectionDist, 150, 20);
+                stroke(node.hue, 100, 255, alpha);
+                strokeWeight(map(dist, 0, connectionDist, 2, 0.5));
+                line(node.x, node.y, node.z, otherNode.x, otherNode.y, otherNode.z);
+            }
+        }
+    }
+    
+    // 어트랙터 그리기 (보이지 않음, 디버깅용)
+    for (let i = 0; i < attractors.length; i++) {
+        const attractor = attractors[i];
+        
+        push();
+        translate(attractor.x, attractor.y, attractor.z);
+        noFill();
+        stroke(0, 0, 100, 50);
+        sphere(attractor.radius);
+        pop();
+    }
+    
+    // 스펙트럼 링 표시
+    const time = millis() * 0.001;
+    for (let i = 0; i < 3; i++) {
+        push();
+        rotateX(i * PI/3);
+        rotateY(time * 0.1);
+        noFill();
+        strokeWeight(3);
+        stroke(180 + i * 20, 200, 255, 100);
+        ellipse(0, 0, 800, 800);
+        pop();
+    }
+}
+
+// 파티클 시스템
+function drawParticleSystem() {
+    const time = millis() * 0.001;
+    
+    // 파티클 그리기 및 업데이트
+    for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        
+        // 파티클 생명 감소
+        p.life -= 0.5;
+        
+        // 파티클 리셋
+        if (p.life <= 0) {
+            const angle = random(TWO_PI);
+            const radius = random(10, 100);
+            p.x = cos(angle) * radius;
+            p.y = sin(angle) * radius;
+            p.z = random(-50, 50);
+            
+            p.vx = cos(angle) * random(2, 5);
+            p.vy = sin(angle) * random(2, 5);
+            p.vz = random(-2, 2);
+            
+            p.size = random(1, 4);
+            p.life = 255;
+        }
+        
+        // 파티클 이동
+        p.x += p.vx;
+        p.y += p.vy;
+        p.z += p.vz;
+        
+        // 중력 효과
+        p.vy += 0.05;
+        
+        // 마우스 중력 효과 추가
+        if (isGravityActive && gravityStrength > 0.1) {
+            const dx = p.x - mouseWorldX;
+            const dy = p.y - mouseWorldY;
+            const dz = p.z - mouseWorldZ;
+            const dist = sqrt(dx*dx + dy*dy + dz*dz);
+            
+            if (dist < 500) {
+                const force = map(dist, 0, 500, gravityStrength * 0.5, 0);
+                p.vx += -dx / (dist + 0.1) * force;
+                p.vy += -dy / (dist + 0.1) * force;
+                p.vz += -dz / (dist + 0.1) * force;
+                
+                // 중력장 근처의 파티클은 크기와 색상을 변경
+                if (dist < 200) {
+                    p.hue = lerp(p.hue, 0, 0.05); // 빨간색으로 변화
+                    p.size = lerp(p.size, p.size * 1.5, 0.1); // 크기 증가
+                }
+            }
+        }
+        
+        // 스펙트럼 값으로 파티클 변형
+        const spectrumIndex = i % spectrum.length;
+        const freqValue = spectrum[spectrumIndex];
+        
+        const hue = p.hue + freqValue * 40;
+        const alpha = map(p.life, 0, 255, 0, 200);
+        
+        // 파티클 그리기
+        push();
+        translate(p.x, p.y, p.z);
+        noStroke();
+        fill(hue, 200, 255, alpha);
+        sphere(p.size * (1 + freqValue));
+        pop();
+    }
+    
+    // 중심 펄스 이펙트
+    push();
+    const pulseSize = 50 + 30 * sin(time * 5);
+    noStroke();
+    fill(200, 100, 255, 150);
+    sphere(pulseSize);
+    
+    // 오비탈 이펙트
+    for (let i = 0; i < 5; i++) {
+        push();
+        const ringSize = 100 + i * 50;
+        rotateX(time * 0.3 + i * 0.5);
+        rotateY(time * 0.2 + i * 0.3);
+        noFill();
+        stroke(180 + i * 15, 200, 255, 70);
+        strokeWeight(2);
+        ellipse(0, 0, ringSize, ringSize);
+        pop();
+    }
+    
+    pop();
+    
+    // 주변 파티클 폭발 효과
+    for (let i = 0; i < 100; i++) {
+        const angle = i * TWO_PI / 100;
+        const x = cos(angle) * (300 + 50 * sin(time * 2 + i * 0.1));
+        const y = sin(angle) * (300 + 50 * sin(time * 2 + i * 0.1));
+        const z = 50 * sin(i * 0.3 + time * 3);
+        
+        push();
+        translate(x, y, z);
+        noStroke();
+        fill(200, 150, 255, 150);
+        sphere(3 + 2 * sin(i * 0.5 + time * 4));
+        pop();
+    }
+}
+
+// 3D 지형 시각화
+function drawTerrain() {
+    const time = millis() * 0.001;
+    
+    // 지형 그리기
+    push();
+    translate(-terrainSize * 5 / 2, -terrainSize * 5 / 2, 0);
+    
+    // 마우스 중력 중심점 계산
+    let gravityX = (mouseWorldX + terrainSize * 5 / 2) / 10;
+    let gravityY = (mouseWorldY + terrainSize * 5 / 2) / 10;
+    gravityX = constrain(gravityX, 0, terrainSize - 1);
+    gravityY = constrain(gravityY, 0, terrainSize - 1);
+
+    for (let x = 0; x < terrainSize - 1; x++) {
+        for (let y = 0; y < terrainSize - 1; y++) {
+            // 마우스 중력 효과 추가
+            let gravityEffect = 0;
+            if (isGravityActive && gravityStrength > 0.1) {
+                const dx = x - gravityX;
+                const dy = y - gravityY;
+                const dist = sqrt(dx*dx + dy*dy);
+                
+                if (dist < 20) {
+                    gravityEffect = map(dist, 0, 20, gravityStrength * 15, 0);
+                }
+            }
+            
+            // 스펙트럼 기반 높이 조정 + 중력 효과
+            const spectrumIndex = (x + y) % spectrum.length;
+            const freqValue = spectrum[spectrumIndex] * 100;
+            
+            const h1 = terrain[x][y] + freqValue - gravityEffect;
+            const h2 = terrain[x + 1][y] + freqValue - gravityEffect;
+            const h3 = terrain[x + 1][y + 1] + freqValue - gravityEffect;
+            const h4 = terrain[x][y + 1] + freqValue - gravityEffect;
+            
+            // 색상 계산
+            const hue = map(h1, 0, 200, 160, 220);
+            
+            // 사각형 그리기
+            fill(hue, 150, 255, 150);
+            stroke(hue, 200, 255, 100);
+            strokeWeight(1);
+            
+            beginShape();
+            vertex(x * 10, y * 10, h1);
+            vertex((x + 1) * 10, y * 10, h2);
+            vertex((x + 1) * 10, (y + 1) * 10, h3);
+            vertex(x * 10, (y + 1) * 10, h4);
+            endShape(CLOSE);
+        }
+    }
+    
+    pop();
+    
+    // 주변 효과
+    push();
+    for (let i = 0; i < 200; i++) {
+        const angle = i * TWO_PI / 200;
+        const radius = 500 + 50 * sin(i * 0.2 + time);
+        const height = 200 * sin(i * 0.1 + time * 2);
+        
+        const x = cos(angle) * radius;
+        const y = sin(angle) * radius;
+        const z = height;
+        
+        push();
+        translate(x, y, z);
+        noStroke();
+        fill(180, 150, 255, 100);
+        sphere(2 + sin(i + time * 3));
+        pop();
+    }
+    pop();
+    
+    // 중심 구조물
+    push();
+    rotateY(time * 0.5);
+    
+    for (let i = 0; i < 5; i++) {
+        push();
+        const h = i * 40;
+        translate(0, 0, h);
+        rotateY(time * (i + 1) * 0.2);
+        
+        // 진행 상태 반영
+        const progressAngle = map(audioProgress, 0, audioDuration, 0, TWO_PI);
+        const sectorsCount = 12;
+        
+        for (let j = 0; j < sectorsCount; j++) {
+            const sectorAngle = j * TWO_PI / sectorsCount;
+            const isActive = (sectorAngle < progressAngle % TWO_PI);
+            
+            push();
+            rotateY(sectorAngle);
+            translate(100, 0, 0);
+            
+            if (isActive) {
+                fill(190, 200, 255, 150);
+            } else {
+                fill(190, 100, 200, 100);
+            }
+            
+            box(20, 10, 30);
+            pop();
+        }
+        
+        // 링
+        noFill();
+        stroke(180 + i * 10, 200, 255, 150);
+        strokeWeight(2);
+        ellipse(0, 0, 220, 220);
+        
+        pop();
+    }
+    
+    pop();
+}
+
+// 창 크기 변경 처리
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
+
+// 마우스 월드 좌표 계산
+function calculateMouseWorldCoordinates() {
+    // 마우스 화면 좌표를 -1에서 1 사이로 정규화
+    const mouseXNorm = map(mouseX, 0, width, -1, 1);
+    const mouseYNorm = map(mouseY, 0, height, -1, 1);
+    
+    // 월드 좌표 계산 (간단한 근사값)
+    // 실제 3D 공간에서는 더 복잡한 계산이 필요하지만, 시각적 효과를 위한 근사치
+    mouseWorldX = mouseXNorm * width / 2;
+    mouseWorldY = mouseYNorm * height / 2;
+    mouseWorldZ = 0; // Z 값은 현재 카메라 깊이에 따라 조정됨
+    
+    // 회전 및 줌 적용
+    const rotY = rotationY;
+    const rotX = rotationX;
+    
+    // 회전 변환 적용 (간단한 근사)
+    const tempX = mouseWorldX;
+    const tempZ = mouseWorldZ;
+    
+    mouseWorldX = tempX * cos(rotY) - tempZ * sin(rotY);
+    mouseWorldZ = tempX * sin(rotY) + tempZ * cos(rotY);
+    
+    const tempY = mouseWorldY;
+    mouseWorldY = tempY * cos(rotX) - mouseWorldZ * sin(rotX);
+    mouseWorldZ = tempY * sin(rotX) + mouseWorldZ * cos(rotX);
+    
+    // 카메라 거리 보정
+    mouseWorldZ -= zoom * 0.5;
+}
+</script>
+</body>
+</html>
