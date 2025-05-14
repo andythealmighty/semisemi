@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인사이트 - 세미콜론 | 기술로 혁신을 만드는 회사</title>
+    <meta name="description" content="세미콜론의 기술 인사이트, 트렌드 분석, 개발 팁, 성공 스토리를 확인하세요. AI, 웹 개발, 자동화 분야의 최신 정보를 공유합니다.">
+    
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- CSS 파일 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="subpages.css">
+</head>
+<body>
+    <!-- 상단 진행바 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <!-- 헤더 -->
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">;</a>
+                </div>
+                
+                <nav class="main-nav">
+                    <ul class="nav-links">
+                        <li><a href="about.html">회사소개</a></li>
+                        <li><a href="services.html">서비스</a></li>
+                        <li><a href="projects.html">프로젝트</a></li>
+                        <li><a href="blog.html" class="active">인사이트</a></li>
+                        <li><a href="careers.html">채용</a></li>
+                        <li><a href="#contact" class="btn btn-outline">문의하기</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="mobile-menu-btn">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 페이지 헤더 -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumbs">
+                <a href="index.html">홈</a> / <span>인사이트</span>
+            </div>
+            <h1>기술 인사이트 & 트렌드</h1>
+            <p>세미콜론의 전문가들이 전하는 기술 인사이트, 트렌드 분석, 개발 팁, 그리고 성공 사례를 만나보세요.</p>
+        </div>
+    </section>
+    
+    <!-- 블로그 개요 섹션 -->
+    <section class="blog-overview">
+        <div class="container">
+            <div class="section-header">
+                <h2>최신 인사이트</h2>
+                <p>세미콜론 팀이 공유하는 기술 트렌드와 경험</p>
+            </div>
+            
+            <div class="blog-filters">
+                <div class="blog-filter active">전체</div>
+                <div class="blog-filter">AI 기술</div>
+                <div class="blog-filter">웹/앱 개발</div>
+                <div class="blog-filter">업무 자동화</div>
+                <div class="blog-filter">사업화 전략</div>
+                <div class="blog-filter">성공 사례</div>
+            </div>
+            
+            <div class="blog-grid">
+                <!-- 블로그 카드 1 -->
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1677442135631-34c557d9fbc9?q=80&w=1000" alt="AI 트렌드">
+                        <div class="blog-category">AI 기술</div>
+                    </div>
+                    <div class="blog-info">
+                        <div class="blog-meta">
+                            <div class="meta-item">
+                                <i class="far fa-calendar"></i>
+                                <span>2023.10.25</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>8분 소요</span>
+                            </div>
+                        </div>
+                        <h3>2024년 주목해야 할 AI 기술 트렌드 5가지</h3>
+                        <p>기업 경쟁력 강화에 핵심이 되고 있는 AI 기술의 최신 트렌드와 활용 방안을 알아봅니다.</p>
+                        <div class="blog-footer">
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="김민석">
+                                </div>
+                                <div class="author-name">김민석</div>
+                            </div>
+                            <a href="#" class="blog-link">자세히 보기 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 블로그 카드 2 -->
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=1000" alt="웹 개발 트렌드">
+                        <div class="blog-category">웹/앱 개발</div>
+                    </div>
+                    <div class="blog-info">
+                        <div class="blog-meta">
+                            <div class="meta-item">
+                                <i class="far fa-calendar"></i>
+                                <span>2023.10.18</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>6분 소요</span>
+                            </div>
+                        </div>
+                        <h3>모던 웹 개발의 핵심: Next.js와 React의 시너지</h3>
+                        <p>빠른 로딩 속도와 개발 생산성을 높이는 Next.js와 React의 조합이 가져오는 이점을 알아봅니다.</p>
+                        <div class="blog-footer">
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="이지현">
+                                </div>
+                                <div class="author-name">이지현</div>
+                            </div>
+                            <a href="#" class="blog-link">자세히 보기 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 블로그 카드 3 -->
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1600267204091-5c1ab8b10c02?q=80&w=1000" alt="자동화 솔루션">
+                        <div class="blog-category">업무 자동화</div>
+                    </div>
+                    <div class="blog-info">
+                        <div class="blog-meta">
+                            <div class="meta-item">
+                                <i class="far fa-calendar"></i>
+                                <span>2023.10.10</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>5분 소요</span>
+                            </div>
+                        </div>
+                        <h3>업무 생산성을 3배 높이는 자동화 툴과 적용 사례</h3>
+                        <p>반복적인 업무를 효율적으로 자동화하여 시간과 비용을 절약한 실제 사례를 소개합니다.</p>
+                        <div class="blog-footer">
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="박준호">
+                                </div>
+                                <div class="author-name">박준호</div>
+                            </div>
+                            <a href="#" class="blog-link">자세히 보기 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 블로그 카드 4 -->
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1664575599736-c5197c684128?q=80&w=1000" alt="사업화 전략">
+                        <div class="blog-category">사업화 전략</div>
+                    </div>
+                    <div class="blog-info">
+                        <div class="blog-meta">
+                            <div class="meta-item">
+                                <i class="far fa-calendar"></i>
+                                <span>2023.10.05</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>7분 소요</span>
+                            </div>
+                        </div>
+                        <h3>기술 스타트업을 위한 성공적인 사업화 전략 가이드</h3>
+                        <p>기술 기반 스타트업이 초기 단계에서 성공적으로 시장에 진입하기 위한 핵심 전략을 소개합니다.</p>
+                        <div class="blog-footer">
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="최수진">
+                                </div>
+                                <div class="author-name">최수진</div>
+                            </div>
+                            <a href="#" class="blog-link">자세히 보기 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 블로그 카드 5 -->
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1562577309-2592ab84b1bc?q=80&w=1000" alt="성공 사례">
+                        <div class="blog-category">성공 사례</div>
+                    </div>
+                    <div class="blog-info">
+                        <div class="blog-meta">
+                            <div class="meta-item">
+                                <i class="far fa-calendar"></i>
+                                <span>2023.09.28</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>9분 소요</span>
+                            </div>
+                        </div>
+                        <h3>AI 도입으로 매출 250% 증가한 중소기업 성공 사례</h3>
+                        <p>AI 기술을 활용해 고객 경험을 개선하고 매출을 대폭 증가시킨 국내 중소기업의 실제 사례를 분석합니다.</p>
+                        <div class="blog-footer">
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="정승현">
+                                </div>
+                                <div class="author-name">정승현</div>
+                            </div>
+                            <a href="#" class="blog-link">자세히 보기 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 블로그 카드 6 -->
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1609921212029-bb5a28e60960?q=80&w=1000" alt="AI 솔루션">
+                        <div class="blog-category">AI 기술</div>
+                    </div>
+                    <div class="blog-info">
+                        <div class="blog-meta">
+                            <div class="meta-item">
+                                <i class="far fa-calendar"></i>
+                                <span>2023.09.20</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>6분 소요</span>
+                            </div>
+                        </div>
+                        <h3>LLM을 활용한 비즈니스 프로세스 혁신 방법론</h3>
+                        <p>대형 언어 모델(LLM)을 기업 환경에 효과적으로 도입하여 업무 프로세스를 혁신하는 방법을 소개합니다.</p>
+                        <div class="blog-footer">
+                            <div class="author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="김민석">
+                                </div>
+                                <div class="author-name">김민석</div>
+                            </div>
+                            <a href="#" class="blog-link">자세히 보기 <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 페이지네이션 -->
+            <div class="projects-pagination">
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <span class="page-dots">...</span>
+                <a href="#" class="page-btn">5</a>
+                <a href="#" class="page-btn"><i class="fas fa-angle-right"></i></a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 구독 섹션 -->
+    <section class="cta-banner" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=1470');">
+        <div class="container">
+            <div class="cta-content">
+                <h2>최신 기술 인사이트를 받아보세요</h2>
+                <p>세미콜론의 기술 소식, 트렌드 분석, 개발 팁을 월 1회 이메일로 받아보세요.</p>
+                <form class="subscription-form">
+                    <input type="email" placeholder="이메일 주소를 입력하세요" required>
+                    <button type="submit" class="btn btn-primary">구독하기</button>
+                </form>
+                <div class="form-note">* 언제든지 구독을 취소할 수 있습니다.</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 연락처 섹션 -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>문의하기</h2>
+                <p>프로젝트에 대한 문의나 협업 제안이 있으신가요?</p>
+            </div>
+            
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <div class="contact-heading">
+                        <h3>언제든지 연락주세요</h3>
+                        <p>새로운 아이디어나 프로젝트에 대해 이야기하고 싶으시다면 언제든지 연락 주세요.</p>
+                    </div>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">contact@semicolon.com</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">02-123-4567</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">서울특별시 강남구 테헤란로</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-cta">
+                        <a href="mailto:contact@semicolon.com" class="btn btn-outline"><i class="fas fa-envelope"></i> 이메일 보내기</a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <div class="form-header">
+                        <h3>문의하기</h3>
+                        <p>문의 사항을 작성해 주시면 빠른 시일 내에 답변드리겠습니다.</p>
+                    </div>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" id="name" class="form-control" placeholder="이름을 입력하세요">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="email" id="email" class="form-control" placeholder="이메일을 입력하세요">
+                        </div>
+                        <div class="form-group">
+                            <label for="inquiry-type">문의 유형</label>
+                            <select id="inquiry-type" class="form-control">
+                                <option value="" disabled selected>문의 유형을 선택하세요</option>
+                                <option value="partnership">협업 및 파트너십</option>
+                                <option value="service">서비스 문의</option>
+                                <option value="career">채용 문의</option>
+                                <option value="press">언론 및 미디어 문의</option>
+                                <option value="other">기타</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">문의 내용</label>
+                            <textarea id="message" class="form-control" placeholder="문의 내용을 입력하세요" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">문의 전송하기 <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 푸터 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <div class="footer-logo">
+                        <h2>;</h2>
+                        <p>아이디어에서 사업까지, 기술로 실현하는 혁신</p>
+                    </div>
+                    <p class="footer-desc">세미콜론은 기획부터 개발, 사업화까지 고객의 비즈니스를 성공으로 이끄는 종합 기술 기업입니다.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">솔루션</h4>
+                    <ul class="footer-links">
+                        <li><a href="services.html#business">사업화 컨설팅</a></li>
+                        <li><a href="services.html#ai">AI 솔루션</a></li>
+                        <li><a href="services.html#webapp">웹/앱 개발</a></li>
+                        <li><a href="services.html#automation">업무 자동화</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">회사</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">회사소개</a></li>
+                        <li><a href="services.html">서비스</a></li>
+                        <li><a href="projects.html">프로젝트</a></li>
+                        <li><a href="blog.html">인사이트</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-column">
+                    <h4 class="footer-heading">정책</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">이용약관</a></li>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">이메일 무단수집 거부</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 세미콜론. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">사이트맵</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="careers.html">채용</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
