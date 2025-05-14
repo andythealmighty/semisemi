@@ -13,6 +13,110 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <!-- CSS 연결 -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* 헤더 스타일 개선 */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #111;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: #0070f3;
+            font-family: 'Fira Code', monospace;
+        }
+        
+        .logo span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-left: 5px;
+            background: linear-gradient(135deg, #0070f3, #8e2de2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: translateY(2px);
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 5px;
+        }
+        
+        .nav-links a {
+            position: relative;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #0070f3;
+            background: rgba(0, 112, 243, 0.08);
+        }
+        
+        .nav-links a.active {
+            color: #0070f3;
+            font-weight: 600;
+            background: rgba(0, 112, 243, 0.12);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            right: 15px;
+            height: 3px;
+            background: linear-gradient(90deg, #0070f3, #8e2de2);
+            border-radius: 10px;
+        }
+        
+        .nav-links a.nav-cta {
+            background: linear-gradient(135deg, #0070f3, #0058c5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            margin-left: 10px;
+            box-shadow: 0 5px 15px rgba(0, 112, 243, 0.25);
+        }
+        
+        .nav-links a.nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 112, 243, 0.35);
+            background: linear-gradient(135deg, #0080ff, #0065e0);
+        }
+    </style>
 </head>
 <body>
     <div class="progress-bar"></div>
@@ -115,7 +219,68 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="floating-model floating-element float-2">
+                                                <div class="floating-code floating-element float-1">
+                            <div class="code-header">
+                                <div class="code-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <div class="code-title">AIProcessor.js</div>
+                            </div>
+                            <div class="code-container">
+                                <div class="code-line">
+                                    <span class="line-number">1</span>
+                                    <span class="line-content"><span class="keyword">class</span> <span class="function">AIModelProcessor</span> {</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">2</span>
+                                    <span class="line-content">  <span class="keyword">constructor</span>() {</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">3</span>
+                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">models</span> = [<span class="string">"LLM"</span>, <span class="string">"GPT"</span>, <span class="string">"BERT"</span>];</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">4</span>
+                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">processors</span> = [<span class="string">"MCP"</span>, <span class="string">"TPU"</span>, <span class="string">"FPGA"</span>];</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">5</span>
+                                    <span class="line-content">  }</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">6</span>
+                                    <span class="line-content"></span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">7</span>
+                                    <span class="line-content">  <span class="function">processData</span>(<span class="variable">data</span>) {</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">8</span>
+                                    <span class="line-content">    <span class="keyword">const</span> <span class="variable">model</span> = <span class="keyword">this</span>.<span class="function">selectModel</span>();</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">9</span>
+                                    <span class="line-content">    <span class="keyword">const</span> <span class="variable">processor</span> = <span class="keyword">this</span>.<span class="function">selectProcessor</span>();</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">10</span>
+                                    <span class="line-content">    <span class="keyword">return</span> <span class="keyword">this</span>.<span class="function">analyze</span>(<span class="variable">data</span>, <span class="variable">model</span>, <span class="variable">processor</span>);</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">11</span>
+                                    <span class="line-content">  }</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="line-number">12</span>
+                                    <span class="line-content">}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- <div class="floating-model floating-element float-2">
                             <div class="model-header">
                                 <div class="model-icon">
                                     <i class="fas fa-brain"></i>
@@ -132,7 +297,7 @@
                                     <div class="stat-label">개발 속도</div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="floating-chip floating-element float-3">
                             <div class="chip-icon">
                                 <i class="fas fa-rocket"></i>
