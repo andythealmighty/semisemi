@@ -2825,3 +2825,11 @@ footer::before {
         text-align: center;
     }
 }
+
+.comparison-note {
+    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.6);
+    text-align: right;
+    margin-top: 8px;
+    font-style: italic;
+}

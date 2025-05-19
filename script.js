@@ -382,7 +382,7 @@ function initTestimonialSlider() {
 
 // 숫자 카운팅 애니메이션
 function initNumberCounters() {
-    const counters = document.querySelectorAll('.stat-number, .feature-number');
+    const counters = document.querySelectorAll('.stat-number');
     
     if (counters.length > 0) {
         const options = {
