@@ -132,6 +132,47 @@
             color: #0047FF;
             font-size: 0.9rem;
         }
+
+        @media (max-width: 768px) {
+            .floating-elements {
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            .floating-code {
+                width: 95%;
+                margin: 0 auto;
+                max-height: 300px;
+                overflow-y: auto;
+                transform: none !important;
+            }
+            
+            .code-container {
+                width: 100%;
+                font-size: 11px;
+            }
+            
+            .line-content {
+                white-space: nowrap;
+                overflow-x: auto;
+                padding-right: 5px;
+            }
+            
+            .code-line {
+                padding: 2px 5px;
+            }
+            
+            .hero-visual {
+                height: auto;
+                min-height: 400px;
+            }
+            
+            .float-1 {
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -236,11 +277,11 @@
                                 </div>
                                 <div class="code-line">
                                     <span class="line-number">3</span>
-                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">models</span> = [<span class="string">"LLM"</span>, <span class="string">"GPT"</span>, <span class="string">"BERT"</span>];</span>
+                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">models</span> = [];</span>
                                 </div>
                                 <div class="code-line">
                                     <span class="line-number">4</span>
-                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">processors</span> = [<span class="string">"MCP"</span>, <span class="string">"TPU"</span>, <span class="string">"FPGA"</span>];</span>
+                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">processors</span> = [];</span>
                                 </div>
                                 <div class="code-line">
                                     <span class="line-number">5</span>
@@ -252,109 +293,26 @@
                                 </div>
                                 <div class="code-line">
                                     <span class="line-number">7</span>
-                                    <span class="line-content">  <span class="function">processData</span>(<span class="variable">data</span>) {</span>
+                                    <span class="line-content">  <span class="function">process</span>(<span class="variable">data</span>) {</span>
                                 </div>
                                 <div class="code-line">
                                     <span class="line-number">8</span>
-                                    <span class="line-content">    <span class="keyword">const</span> <span class="variable">model</span> = <span class="keyword">this</span>.<span class="function">selectModel</span>();</span>
+                                    <span class="line-content">    <span class="keyword">const</span> <span class="variable">model</span> = <span class="keyword">this</span>.<span class="function">getModel</span>();</span>
                                 </div>
                                 <div class="code-line">
                                     <span class="line-number">9</span>
-                                    <span class="line-content">    <span class="keyword">const</span> <span class="variable">processor</span> = <span class="keyword">this</span>.<span class="function">selectProcessor</span>();</span>
+                                    <span class="line-content">    <span class="keyword">return</span> <span class="variable">model</span>.<span class="function">run</span>(<span class="variable">data</span>);</span>
                                 </div>
                                 <div class="code-line">
                                     <span class="line-number">10</span>
-                                    <span class="line-content">    <span class="keyword">return</span> <span class="keyword">this</span>.<span class="function">analyze</span>(<span class="variable">data</span>, <span class="variable">model</span>, <span class="variable">processor</span>);</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">11</span>
                                     <span class="line-content">  }</span>
                                 </div>
                                 <div class="code-line">
-                                    <span class="line-number">12</span>
+                                    <span class="line-number">11</span>
                                     <span class="line-content">}</span>
                                 </div>
                             </div>
                         </div>
-                                                <div class="floating-code floating-element float-1">
-                            <div class="code-header">
-                                <div class="code-dots">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <div class="code-title">AIProcessor.js</div>
-                            </div>
-                            <div class="code-container">
-                                <div class="code-line">
-                                    <span class="line-number">1</span>
-                                    <span class="line-content"><span class="keyword">class</span> <span class="function">AIModelProcessor</span> {</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">2</span>
-                                    <span class="line-content">  <span class="keyword">constructor</span>() {</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">3</span>
-                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">models</span> = [<span class="string">"LLM"</span>, <span class="string">"GPT"</span>, <span class="string">"BERT"</span>];</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">4</span>
-                                    <span class="line-content">    <span class="keyword">this</span>.<span class="variable">processors</span> = [<span class="string">"MCP"</span>, <span class="string">"TPU"</span>, <span class="string">"FPGA"</span>];</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">5</span>
-                                    <span class="line-content">  }</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">6</span>
-                                    <span class="line-content"></span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">7</span>
-                                    <span class="line-content">  <span class="function">processData</span>(<span class="variable">data</span>) {</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">8</span>
-                                    <span class="line-content">    <span class="keyword">const</span> <span class="variable">model</span> = <span class="keyword">this</span>.<span class="function">selectModel</span>();</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">9</span>
-                                    <span class="line-content">    <span class="keyword">const</span> <span class="variable">processor</span> = <span class="keyword">this</span>.<span class="function">selectProcessor</span>();</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">10</span>
-                                    <span class="line-content">    <span class="keyword">return</span> <span class="keyword">this</span>.<span class="function">analyze</span>(<span class="variable">data</span>, <span class="variable">model</span>, <span class="variable">processor</span>);</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">11</span>
-                                    <span class="line-content">  }</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="line-number">12</span>
-                                    <span class="line-content">}</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- <div class="floating-model floating-element float-2">
-                            <div class="model-header">
-                                <div class="model-icon">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                                <div class="model-title">사업화 성과</div>
-                            </div>
-                            <div class="model-stats">
-                                <div class="stat-item">
-                                    <div class="stat-value">300%</div>
-                                    <div class="stat-label">ROI 증가</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">5x</div>
-                                    <div class="stat-label">개발 속도</div>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="floating-chip floating-element float-3">
                             <div class="chip-icon">
                                 <i class="fas fa-rocket"></i>
